@@ -1,7 +1,7 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "installCommand": "pnpm install",
-  "buildCommand": "cd artifacts/goai-website && npx vite build --config vite.config.ts",
+  "installCommand": "pnpm install --no-frozen-lockfile",
+  "buildCommand": "pnpm --filter @workspace/goai-website run build",
   "outputDirectory": "artifacts/goai-website/dist/public",
   "framework": null,
   "rewrites": [
