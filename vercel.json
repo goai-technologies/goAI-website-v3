@@ -1,0 +1,11 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "installCommand": "pnpm install",
+  "buildCommand": "cd artifacts/goai-website && npx vite build --config vite.config.ts",
+  "outputDirectory": "artifacts/goai-website/dist/public",
+  "framework": null,
+  "rewrites": [
+    { "source": "/api/healthz", "destination": "/api/healthz" },
+    { "source": "/api/contact", "destination": "/api/contact" }
+  ]
+}

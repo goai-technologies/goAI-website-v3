@@ -991,15 +991,15 @@ body::before { content:''; position:fixed; inset:0; background-image:url("data:i
         <div class="contact-detail"><div class="contact-detail-label">Brazil</div><p>São Paulo</p></div>
       </div>
       <div>
-        <form class="contact-form" onsubmit="event.preventDefault();alert('Thank you! We\'ll be in touch shortly.');">
+        <form class="contact-form" id="contactForm" onsubmit="handleContactSubmit(event)">
           <div class="form-row">
-            <div class="form-group"><label>First Name</label><input type="text" placeholder="Jane" required></div>
-            <div class="form-group"><label>Last Name</label><input type="text" placeholder="Smith" required></div>
+            <div class="form-group"><label>First Name</label><input type="text" name="firstName" placeholder="Jane" required></div>
+            <div class="form-group"><label>Last Name</label><input type="text" name="lastName" placeholder="Smith" required></div>
           </div>
-          <div class="form-group"><label>Work Email</label><input type="email" placeholder="jane@company.com" required></div>
-          <div class="form-group"><label>Company</label><input type="text" placeholder="Acme Corp"></div>
+          <div class="form-group"><label>Work Email</label><input type="email" name="email" placeholder="jane@company.com" required></div>
+          <div class="form-group"><label>Company</label><input type="text" name="company" placeholder="Acme Corp"></div>
           <div class="form-group"><label>I'm interested in...</label>
-            <select>
+            <select name="interest">
               <option>AI Pod Delivery (APDM)</option>
               <option>Full-Stack Development</option>
               <option>Legacy Modernization</option>
@@ -1010,8 +1010,9 @@ body::before { content:''; position:fixed; inset:0; background-image:url("data:i
               <option>Something else</option>
             </select>
           </div>
-          <div class="form-group"><label>Tell us more</label><textarea placeholder="What are you trying to accomplish? What's the scale? Any context helps us prepare for a better conversation."></textarea></div>
-          <button type="submit" class="btn btn-primary" style="align-self:flex-start;">Send Message →</button>
+          <div class="form-group"><label>Tell us more</label><textarea name="message" placeholder="What are you trying to accomplish? What's the scale? Any context helps us prepare for a better conversation."></textarea></div>
+          <button type="submit" id="contactSubmitBtn" class="btn btn-primary" style="align-self:flex-start;">Send Message →</button>
+          <div id="contactFormStatus" style="display:none;padding:12px 16px;border-radius:8px;font-size:.9rem;margin-top:4px;"></div>
         </form>
       </div>
     </div>
@@ -1056,6 +1057,52 @@ document.querySelectorAll('.section-inner,.differ-inner,.careers-hero,.about-her
   el.style.opacity='0';el.style.transform='translateY(32px)';el.style.transition='opacity .7s ease, transform .7s ease';
   observer.observe(el);
 });
+
+// Contact form submission
+const API_BASE = window.location.hostname === 'localhost'
+  ? 'http://localhost:3001/api'
+  : '/api';
+
+async function handleContactSubmit(e) {
+  e.preventDefault();
+  const form = document.getElementById('contactForm');
+  const btn = document.getElementById('contactSubmitBtn');
+  const status = document.getElementById('contactFormStatus');
+  const data = Object.fromEntries(new FormData(form));
+
+  btn.disabled = true;
+  btn.textContent = 'Sending...';
+  status.style.display = 'none';
+
+  try {
+    const res = await fetch(API_BASE + '/contact', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+    const result = await res.json();
+    if (res.ok) {
+      status.style.display = 'block';
+      status.style.background = '#e6f9e6';
+      status.style.color = '#1a7a1a';
+      status.textContent = 'Thank you! We\'ll be in touch shortly.';
+      form.reset();
+    } else {
+      status.style.display = 'block';
+      status.style.background = '#fde8e8';
+      status.style.color = '#c53030';
+      status.textContent = result.error || 'Something went wrong. Please try again.';
+    }
+  } catch (err) {
+    status.style.display = 'block';
+    status.style.background = '#fde8e8';
+    status.style.color = '#c53030';
+    status.textContent = 'Network error. Please check your connection and try again.';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Send Message →';
+  }
+}
 
 // Theme toggle
 function toggleTheme() {
