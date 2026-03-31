@@ -963,7 +963,9 @@ function toggleTheme() {
 // Restore theme
 (function() {
   const saved = localStorage.getItem('theme');
-  if (saved === 'dark') {
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const useDark = saved ? saved === 'dark' : prefersDark;
+  if (useDark) {
     document.documentElement.setAttribute('data-theme', 'dark');
     setTimeout(() => { document.getElementById('themeBtn').textContent = '☀️'; }, 0);
   }
