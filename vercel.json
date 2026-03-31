@@ -1,7 +1,7 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "installCommand": "pnpm install --no-frozen-lockfile",
-  "buildCommand": "pnpm --filter @workspace/goai-website run build && mkdir -p public && cp -r artifacts/goai-website/dist/public/* public/",
+  "buildCommand": "mkdir -p public && cp artifacts/goai-website/index.html public/index.html && cp -r artifacts/goai-website/public/. public/",
   "outputDirectory": "public",
   "framework": null,
   "rewrites": [
