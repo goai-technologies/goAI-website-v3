@@ -70,6 +70,18 @@ body::before { content:''; position:fixed; inset:0; background-image:url("data:i
 .hero-chv { stroke:currentColor; stroke-linecap:round; stroke-linejoin:round; fill:none; }
 @media(max-width:700px){ .hero-visual { display:none; } }
 
+/* ── SECTION DECORATIONS ── */
+.pg-deco { position:absolute; pointer-events:none; overflow:hidden; display:flex; align-items:center; justify-content:center; top:0; right:0; bottom:0; width:38%; -webkit-mask-image:linear-gradient(to right,transparent 0%,black 22%); mask-image:linear-gradient(to right,transparent 0%,black 22%); color:var(--ink); }
+.pg-deco svg { width:90%; height:auto; max-height:80vh; }
+.d-line { fill:none; stroke:currentColor; stroke-linecap:round; stroke-linejoin:round; }
+.d-ring { fill:none; stroke:currentColor; }
+.d-dot { fill:var(--accent); }
+.about-hero { position:relative; overflow:hidden; }
+.careers-hero { position:relative; overflow:hidden; }
+.contact-page-inner { position:relative; }
+.pg-deco-top { bottom:auto; height:300px; }
+@media(max-width:900px){ .pg-deco { display:none; } }
+
 /* SECTIONS */
 .section { padding:clamp(80px,10vw,140px) clamp(24px,4vw,64px); }
 .section-inner { max-width:var(--max-w); margin:0 auto; }
@@ -820,6 +832,24 @@ body::before { content:''; position:fixed; inset:0; background-image:url("data:i
       <div class="timeline-item"><div class="timeline-year">Platform & Product</div><h3>From services to platform</h3><p>APDM evolves from a delivery methodology into a licensable platform. Multiple enterprises exploring APDM for internal deployment and strategic investment.</p></div>
     </div>
    </div>
+    <div class="pg-deco" aria-hidden="true">
+      <svg viewBox="0 0 380 520" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle class="d-ring" cx="190" cy="260" r="72" stroke-width="1.5" opacity="0.10"/>
+        <circle class="d-ring" cx="190" cy="260" r="140" stroke-width="1.5" opacity="0.075"/>
+        <circle class="d-ring" cx="190" cy="260" r="212" stroke-width="1.5" opacity="0.055"/>
+        <circle class="d-ring" cx="190" cy="260" r="290" stroke-width="1" opacity="0.04"/>
+        <line class="d-line" x1="190" y1="188" x2="262" y2="260" stroke-width="1" opacity="0.22"/>
+        <line class="d-line" x1="262" y1="260" x2="190" y2="332" stroke-width="1" opacity="0.22"/>
+        <line class="d-line" x1="190" y1="332" x2="118" y2="260" stroke-width="1" opacity="0.22"/>
+        <line class="d-line" x1="118" y1="260" x2="190" y2="188" stroke-width="1" opacity="0.22"/>
+        <line class="d-line" x1="118" y1="188" x2="262" y2="332" stroke-width="0.8" opacity="0.10"/>
+        <line class="d-line" x1="262" y1="188" x2="118" y2="332" stroke-width="0.8" opacity="0.10"/>
+        <circle class="d-dot" cx="190" cy="188" r="5" opacity="0.70"/>
+        <circle class="d-dot" cx="262" cy="260" r="4.5" opacity="0.60"/>
+        <circle class="d-dot" cx="190" cy="332" r="5" opacity="0.65"/>
+        <circle class="d-dot" cx="118" cy="260" r="4.5" opacity="0.55"/>
+      </svg>
+    </div>
   </div>
   <section class="cta-banner">
     <h2>Let's build something together.</h2>
@@ -840,6 +870,21 @@ body::before { content:''; position:fixed; inset:0; background-image:url("data:i
       <div class="value-card"><div class="value-num">01</div><h3>AI-Native by Default</h3><p>Every person at goAI works with AI, not around it. We don't have an "AI team" — we have teams where AI is as fundamental as the IDE. You'll ship more in a week here than you did in a quarter elsewhere.</p></div>
       <div class="value-card"><div class="value-num">02</div><h3>Small Teams, Big Impact</h3><p>Our pods are 4–6 people. No bureaucracy. No waterfalls. You'll work directly with enterprise architects at Fortune 500 companies and see your code in production — not in a backlog.</p></div>
       <div class="value-card"><div class="value-num">03</div><h3>Global from Day One</h3><p>We operate across India, the US, Brazil, and Australia. You'll collaborate across continents and build systems that serve millions of users.</p></div>
+    </div>
+    <div class="pg-deco" aria-hidden="true">
+      <svg viewBox="0 0 420 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <line class="d-line" x1="0" y1="360" x2="420" y2="360" stroke-width="0.8" opacity="0.08"/>
+        <line class="d-line" x1="0" y1="290" x2="420" y2="290" stroke-width="0.8" opacity="0.08"/>
+        <line class="d-line" x1="0" y1="220" x2="420" y2="220" stroke-width="0.8" opacity="0.08"/>
+        <line class="d-line" x1="0" y1="150" x2="420" y2="150" stroke-width="0.8" opacity="0.08"/>
+        <line class="d-line" x1="0" y1="80" x2="420" y2="80" stroke-width="0.8" opacity="0.08"/>
+        <polyline class="d-line" points="30,370 110,305 210,228 318,155 410,88" stroke-width="1.5" opacity="0.10"/>
+        <polyline class="d-line" points="0,380 90,315 190,240 300,165 400,96 420,82" stroke-width="3" opacity="0.18"/>
+        <circle class="d-dot" cx="90" cy="315" r="3.5" opacity="0.50"/>
+        <circle class="d-dot" cx="190" cy="240" r="4.5" opacity="0.65"/>
+        <circle class="d-dot" cx="300" cy="165" r="4" opacity="0.60"/>
+        <circle class="d-dot" cx="400" cy="96" r="5" opacity="0.75"/>
+      </svg>
     </div>
   </div>
   <div class="roles-section">
@@ -888,6 +933,22 @@ body::before { content:''; position:fixed; inset:0; background-image:url("data:i
 <div class="page" id="page-contact">
   <div class="contact-page">
     <div class="contact-page-inner">
+    <div class="pg-deco pg-deco-top" aria-hidden="true">
+      <svg viewBox="0 0 360 280" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <pattern id="cdot" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
+            <circle cx="16" cy="16" r="1.8" fill="currentColor"/>
+          </pattern>
+        </defs>
+        <rect width="360" height="280" fill="url(#cdot)" opacity="0.18"/>
+        <circle class="d-dot" cx="112" cy="112" r="5" opacity="0.65"/>
+        <circle class="d-dot" cx="240" cy="80" r="4" opacity="0.50"/>
+        <circle class="d-dot" cx="320" cy="176" r="4.5" opacity="0.55"/>
+        <line class="d-line" x1="112" y1="112" x2="240" y2="80" stroke-width="1" opacity="0.18"/>
+        <line class="d-line" x1="240" y1="80" x2="320" y2="176" stroke-width="1" opacity="0.14"/>
+        <line class="d-line" x1="112" y1="112" x2="320" y2="176" stroke-width="0.8" opacity="0.10"/>
+      </svg>
+    </div>
     <div class="section-eyebrow">Contact</div>
     <h1>Let's explore what's possible.</h1>
     <div class="contact-grid">
