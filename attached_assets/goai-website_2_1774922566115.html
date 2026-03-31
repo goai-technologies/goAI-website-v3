@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>goAI Solutions — The AI Pod Delivery Model</title>
+<meta name="description" content="goAI Solutions is transforming enterprise software delivery with the AI Pod Delivery Model (APDM). Replacing the traditional Global Delivery Model at scale.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #0a0f1a;
+  --chalk: #f8f7f4;
+  --warm: #f2efe8;
+  --accent: #e85d26;
+  --accent-dark: #c44d1e;
+  --teal: #0d7377;
+  --teal-light: #11999e;
+  --slate: #4a5568;
+  --mist: #e2e0d8;
+  --serif: 'Instrument Serif', Georgia, serif;
+  --sans: 'DM Sans', -apple-system, sans-serif;
+  --max-w: 1280px;
+  --nav-h: 72px;
+}
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body { font-family: var(--sans); color: var(--ink); background: var(--chalk); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+body::before { content:''; position:fixed; inset:0; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E"); pointer-events:none; z-index:9999; }
+
+/* NAV */
+.nav { position:fixed; top:0; left:0; right:0; height:var(--nav-h); display:flex; align-items:center; justify-content:space-between; padding:0 clamp(24px,4vw,64px); z-index:1000; transition:background .4s, box-shadow .4s, backdrop-filter .4s; }
+.nav.scrolled { background:rgba(248,247,244,.92); backdrop-filter:blur(16px); box-shadow:0 1px 0 var(--mist); }
+.nav-logo { font-family:var(--sans); font-weight:700; font-size:1.35rem; letter-spacing:-0.02em; color:var(--ink); text-decoration:none; }
+.nav-logo span { color:var(--accent); }
+.nav-links { display:flex; gap:32px; align-items:center; }
+.nav-links a { font-size:.875rem; font-weight:500; color:var(--slate); text-decoration:none; letter-spacing:0.01em; transition:color .25s; }
+.nav-links a:hover { color:var(--ink); }
+.nav-links a.cta-link { background:var(--ink); color:var(--chalk); padding:10px 24px; border-radius:6px; transition:background .25s; }
+.nav-links a.cta-link:hover { background:var(--accent); }
+.mobile-toggle { display:none; background:none; border:none; cursor:pointer; }
+.mobile-toggle span { display:block; width:24px; height:2px; background:var(--ink); margin:5px 0; transition:.3s; }
+
+.page { display:none; } .page.active { display:block; }
+
+/* BUTTONS */
+.btn { display:inline-flex; align-items:center; gap:8px; font-family:var(--sans); font-size:.9375rem; font-weight:600; padding:14px 32px; border-radius:6px; text-decoration:none; transition:all .3s; cursor:pointer; border:none; }
+.btn-primary { background:var(--ink); color:var(--chalk); }
+.btn-primary:hover { background:var(--accent); }
+.btn-outline { border:1.5px solid var(--mist); color:var(--ink); background:transparent; }
+.btn-outline:hover { border-color:var(--ink); }
+.btn-accent { background:var(--accent); color:var(--chalk); }
+.btn-accent:hover { background:var(--accent-dark); }
+
+/* HERO */
+.hero { min-height:100vh; display:flex; flex-direction:column; justify-content:center; padding:calc(var(--nav-h) + 40px) clamp(24px,4vw,64px) 80px; position:relative; overflow:hidden; }
+.hero::before { content:''; position:absolute; top:-20%; right:-10%; width:800px; height:800px; background:radial-gradient(circle,rgba(232,93,38,.06) 0%,transparent 70%); pointer-events:none; }
+.hero-eyebrow { font-size:.8rem; font-weight:600; letter-spacing:0.15em; text-transform:uppercase; color:var(--accent); margin-bottom:24px; opacity:0; animation:fadeUp .8s .2s forwards; }
+.hero h1 { font-family:var(--serif); font-size:clamp(2.8rem,6vw,5.2rem); line-height:1.08; letter-spacing:-0.025em; max-width:900px; opacity:0; animation:fadeUp .8s .35s forwards; }
+.hero h1 em { font-style:italic; color:var(--accent); }
+.hero-sub { font-size:clamp(1.1rem,1.8vw,1.35rem); line-height:1.6; color:var(--slate); max-width:620px; margin-top:28px; opacity:0; animation:fadeUp .8s .5s forwards; }
+.hero-actions { display:flex; gap:16px; margin-top:40px; opacity:0; animation:fadeUp .8s .65s forwards; }
+.hero-stats { display:flex; gap:48px; margin-top:72px; padding-top:40px; border-top:1px solid var(--mist); opacity:0; animation:fadeUp .8s .8s forwards; }
+.hero-stat-num { font-family:var(--serif); font-size:2.5rem; letter-spacing:-0.02em; }
+.hero-stat-label { font-size:.8rem; color:var(--slate); margin-top:4px; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+
+/* SECTIONS */
+.section { padding:clamp(80px,10vw,140px) clamp(24px,4vw,64px); }
+.section-inner { max-width:var(--max-w); margin:0 auto; }
+.section-dark { background:var(--ink); color:var(--chalk); }
+.section-warm { background:var(--warm); }
+.section-eyebrow { font-size:.75rem; font-weight:600; letter-spacing:0.15em; text-transform:uppercase; color:var(--accent); margin-bottom:20px; }
+.section-title { font-family:var(--serif); font-size:clamp(2rem,4vw,3.2rem); line-height:1.15; letter-spacing:-0.02em; max-width:720px; }
+.section-dark .section-title { color:var(--chalk); }
+.section-body { font-size:1.05rem; line-height:1.75; color:var(--slate); max-width:640px; margin-top:24px; }
+.section-dark .section-body { color:rgba(248,247,244,.65); }
+
+/* ── HARD TRUTH BANNER ── */
+.hard-truth {
+  padding: clamp(64px,8vw,100px) clamp(24px,4vw,64px);
+  background: var(--ink);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.hard-truth::before {
+  content:'';
+  position:absolute;
+  top:50%;left:50%;transform:translate(-50%,-50%);
+  width:900px;height:900px;
+  background:radial-gradient(circle,rgba(232,93,38,.06) 0%,transparent 60%);
+}
+.hard-truth-inner { max-width:800px; margin:0 auto; position:relative; }
+.hard-truth h2 {
+  font-family:var(--serif);
+  font-size:clamp(1.8rem,3.5vw,2.8rem);
+  color:var(--chalk);
+  line-height:1.2;
+  margin-bottom:24px;
+}
+.hard-truth h2 em { color:var(--accent); font-style:italic; }
+.hard-truth p {
+  font-size:1.1rem;
+  color:rgba(248,247,244,.55);
+  line-height:1.7;
+  max-width:600px;
+  margin:0 auto;
+}
+
+/* ── THE DIFFERENTIATOR DIAGRAM ── */
+.differ-section {
+  padding: clamp(80px,10vw,120px) clamp(24px,4vw,64px);
+}
+.differ-inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+}
+.differ-cols {
+  display:grid;
+  grid-template-columns:1fr 60px 1fr;
+  gap:0;
+  margin-top:56px;
+  align-items:stretch;
+}
+.differ-card {
+  padding:48px 40px;
+  border-radius:14px;
+  position:relative;
+}
+.differ-card.left {
+  background:#f5f0ea;
+  border:1px solid var(--mist);
+}
+.differ-card.right {
+  background:var(--ink);
+  color:var(--chalk);
+  border:1px solid rgba(232,93,38,.2);
+}
+.differ-vs {
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--serif);font-size:1.3rem;color:var(--slate);
+  z-index:2;
+}
+.differ-tag {
+  font-size:.65rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;
+  margin-bottom:24px;display:inline-block;padding:6px 14px;border-radius:20px;
+}
+.differ-card.left .differ-tag { background:rgba(0,0,0,.06); color:var(--slate); }
+.differ-card.right .differ-tag { background:rgba(232,93,38,.15); color:var(--accent); }
+.differ-card h3 {
+  font-family:var(--serif);font-size:1.5rem;margin-bottom:20px;line-height:1.25;
+}
+.differ-card.left h3 { color:var(--slate); }
+.differ-card.right h3 { color:var(--chalk); }
+.differ-flow {
+  display:flex;flex-direction:column;gap:16px;margin-top:24px;
+}
+.differ-step {
+  display:flex;align-items:flex-start;gap:14px;
+}
+.differ-icon {
+  flex-shrink:0;width:36px;height:36px;border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.85rem;font-weight:700;
+}
+.differ-card.left .differ-icon { background:rgba(0,0,0,.06); color:var(--slate); }
+.differ-card.right .differ-icon { background:rgba(232,93,38,.15); color:var(--accent); }
+.differ-step-text h4 { font-size:.9rem; font-weight:600; margin-bottom:3px; }
+.differ-card.left .differ-step-text h4 { color:var(--ink); }
+.differ-card.right .differ-step-text h4 { color:var(--chalk); }
+.differ-step-text p { font-size:.82rem; line-height:1.5; }
+.differ-card.left .differ-step-text p { color:var(--slate); }
+.differ-card.right .differ-step-text p { color:rgba(248,247,244,.55); }
+.differ-result {
+  margin-top:32px;padding:20px 24px;border-radius:10px;
+  text-align:center;
+}
+.differ-card.left .differ-result { background:rgba(0,0,0,.04); }
+.differ-card.right .differ-result { background:rgba(232,93,38,.1); }
+.differ-result-num {
+  font-family:var(--serif);font-size:2.2rem;letter-spacing:-0.02em;
+}
+.differ-card.left .differ-result-num { color:var(--slate); }
+.differ-card.right .differ-result-num { color:var(--accent); }
+.differ-result-label { font-size:.78rem; margin-top:4px; }
+.differ-card.left .differ-result-label { color:var(--slate); }
+.differ-card.right .differ-result-label { color:rgba(248,247,244,.5); }
+
+/* ── NARRATIVE OLD/NEW ── */
+.narrative-grid { display:grid; grid-template-columns:1fr 1fr; gap:80px; margin-top:64px; align-items:start; }
+.narrative-card { padding:48px; border-radius:12px; }
+.narrative-card.old { background:#1a1f2e; border:1px solid rgba(255,255,255,.06); }
+.narrative-card.new { background:linear-gradient(135deg,rgba(13,115,119,.12),rgba(232,93,38,.08)); border:1px solid rgba(13,115,119,.15); }
+.narrative-card-tag { font-size:.7rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; margin-bottom:20px; }
+.narrative-card.old .narrative-card-tag { color:rgba(248,247,244,.35); }
+.narrative-card.new .narrative-card-tag { color:var(--teal); }
+.narrative-card h3 { font-family:var(--serif); font-size:1.6rem; margin-bottom:16px; }
+.narrative-card.old h3 { color:rgba(248,247,244,.5); text-decoration:line-through; text-decoration-color:rgba(248,247,244,.2); }
+.narrative-card.new h3 { color:var(--chalk); }
+.narrative-card ul { list-style:none; display:flex; flex-direction:column; gap:12px; }
+.narrative-card li { font-size:.925rem; line-height:1.55; padding-left:24px; position:relative; }
+.narrative-card.old li { color:rgba(248,247,244,.4); }
+.narrative-card.new li { color:rgba(248,247,244,.75); }
+.narrative-card li::before { position:absolute; left:0; top:2px; font-size:.85rem; }
+.narrative-card.old li::before { content:'✕'; color:rgba(248,247,244,.2); }
+.narrative-card.new li::before { content:'→'; color:var(--teal-light); }
+
+/* ── METRICS ── */
+.metrics-row { display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--mist); border:1px solid var(--mist); border-radius:12px; overflow:hidden; margin-top:64px; }
+.metric-cell { background:var(--chalk); padding:48px 32px; text-align:center; }
+.metric-num { font-family:var(--serif); font-size:clamp(2.2rem,3.5vw,3rem); letter-spacing:-0.02em; }
+.metric-label { font-size:.825rem; color:var(--slate); margin-top:8px; line-height:1.4; }
+
+/* ── WHAT WE DELIVER (services woven into story) ── */
+.deliver-grid {
+  display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:56px;
+}
+.deliver-card {
+  padding:40px 32px;border-radius:12px;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);
+  transition:all .35s;
+}
+.deliver-card:hover {
+  border-color:rgba(232,93,38,.3);
+  transform:translateY(-3px);
+}
+.deliver-card h3 { font-family:var(--serif); font-size:1.25rem; color:var(--chalk); margin-bottom:12px; }
+.deliver-card p { font-size:.875rem; line-height:1.65; color:rgba(248,247,244,.55); }
+
+/* ── INDUSTRIES ── */
+.industries-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; margin-top:56px; }
+.industry-card { padding:40px 32px; border:1px solid var(--mist); border-radius:10px; transition:all .35s; background:var(--chalk); }
+.industry-card:hover { border-color:var(--accent); box-shadow:0 8px 32px rgba(232,93,38,.08); transform:translateY(-3px); }
+.industry-icon { font-size:1.8rem; margin-bottom:20px; }
+.industry-card h3 { font-family:var(--serif); font-size:1.3rem; margin-bottom:10px; }
+.industry-card p { font-size:.875rem; line-height:1.6; color:var(--slate); }
+.industry-client { margin-top:16px; font-size:.75rem; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:var(--teal); }
+
+/* ── GLOBAL ── */
+.global-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:32px; margin-top:56px; }
+.global-card { text-align:center; padding:40px 24px; border-radius:10px; border:1px solid var(--mist); }
+.global-flag { font-size:2.2rem; margin-bottom:12px; }
+.global-card h4 { font-family:var(--serif); font-size:1.15rem; margin-bottom:6px; }
+.global-card p { font-size:.8rem; color:var(--slate); line-height:1.5; }
+
+/* ── CTA ── */
+.cta-banner { text-align:center; padding:100px clamp(24px,4vw,64px); background:var(--ink); position:relative; overflow:hidden; }
+.cta-banner::before { content:''; position:absolute; top:50%;left:50%;transform:translate(-50%,-50%); width:800px;height:800px; background:radial-gradient(circle,rgba(232,93,38,.1) 0%,transparent 60%); }
+.cta-banner h2 { font-family:var(--serif); font-size:clamp(2rem,4vw,3rem); color:var(--chalk); position:relative; margin-bottom:16px; }
+.cta-banner p { color:rgba(248,247,244,.6); max-width:480px; margin:0 auto 32px; font-size:1.05rem; position:relative; }
+.cta-banner .btn { position:relative; }
+
+/* ── CAREERS ── */
+.careers-hero { padding:calc(var(--nav-h)+80px) clamp(24px,4vw,64px) 80px; max-width:var(--max-w); margin:0 auto; }
+.careers-hero h1 { font-family:var(--serif); font-size:clamp(2.5rem,5vw,4rem); line-height:1.1; letter-spacing:-0.02em; }
+.careers-hero h1 em { font-style:italic; color:var(--accent); }
+.careers-values { display:grid; grid-template-columns:repeat(3,1fr); gap:32px; margin-top:56px; }
+.value-card { padding:36px; border-radius:10px; background:var(--warm); }
+.value-num { font-family:var(--serif); font-size:2.5rem; color:var(--accent); opacity:.4; margin-bottom:12px; }
+.value-card h3 { font-family:var(--serif); font-size:1.3rem; margin-bottom:10px; }
+.value-card p { font-size:.875rem; line-height:1.6; color:var(--slate); }
+.roles-section { padding:80px clamp(24px,4vw,64px); max-width:var(--max-w); margin:0 auto; }
+.roles-section h2 { font-family:var(--serif); font-size:clamp(1.8rem,3vw,2.4rem); margin-bottom:40px; }
+.role-group-label { font-size:.75rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:var(--accent); margin-top:40px; margin-bottom:16px; }
+.role-group-label:first-child { margin-top:0; }
+.role-card { display:grid; grid-template-columns:1fr auto auto; align-items:center; gap:32px; padding:24px 0; border-bottom:1px solid var(--mist); text-decoration:none; color:var(--ink); transition:.25s; }
+.role-card:hover { padding-left:12px; }
+.role-title { font-family:var(--serif); font-size:1.15rem; }
+.role-loc { font-size:.825rem; color:var(--slate); }
+.role-arrow { font-size:1.2rem; color:var(--accent); transition:transform .25s; }
+.role-card:hover .role-arrow { transform:translateX(4px); }
+.benefits-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:24px; margin-top:40px; }
+.benefit-item { display:flex; gap:16px; align-items:flex-start; padding:28px; background:var(--chalk); border-radius:10px; border:1px solid var(--mist); }
+.benefit-icon { font-size:1.4rem; flex-shrink:0; margin-top:2px; }
+.benefit-item h4 { font-size:.95rem; font-weight:600; margin-bottom:4px; }
+.benefit-item p { font-size:.825rem; color:var(--slate); line-height:1.5; }
+
+/* ── ABOUT ── */
+.about-hero { padding:calc(var(--nav-h)+80px) clamp(24px,4vw,64px) 80px; }
+.about-hero-inner { max-width:var(--max-w); margin:0 auto; }
+.about-hero h1 { font-family:var(--serif); font-size:clamp(2.5rem,5vw,4rem); line-height:1.1; letter-spacing:-0.02em; max-width:700px; }
+.about-hero h1 em { font-style:italic; color:var(--accent); }
+.about-body { font-size:1.1rem; line-height:1.8; color:var(--slate); max-width:700px; margin-top:32px; }
+.about-body p { margin-bottom:20px; }
+.timeline { margin-top:64px; position:relative; padding-left:40px; }
+.timeline::before { content:''; position:absolute; left:12px; top:0; bottom:0; width:1px; background:var(--mist); }
+.timeline-item { position:relative; margin-bottom:48px; }
+.timeline-item::before { content:''; position:absolute; left:-34px; top:8px; width:10px; height:10px; border-radius:50%; background:var(--accent); border:2px solid var(--chalk); }
+.timeline-year { font-size:.75rem; font-weight:700; letter-spacing:0.1em; color:var(--accent); margin-bottom:8px; }
+.timeline-item h3 { font-family:var(--serif); font-size:1.2rem; margin-bottom:6px; }
+.timeline-item p { font-size:.875rem; color:var(--slate); line-height:1.6; }
+
+/* ── CONTACT ── */
+.contact-page { padding:calc(var(--nav-h)+80px) clamp(24px,4vw,64px) 100px; max-width:var(--max-w); margin:0 auto; }
+.contact-page h1 { font-family:var(--serif); font-size:clamp(2.5rem,5vw,3.5rem); line-height:1.1; max-width:600px; }
+.contact-grid { display:grid; grid-template-columns:1fr 1fr; gap:80px; margin-top:56px; }
+.contact-info p { font-size:1rem; line-height:1.8; color:var(--slate); margin-bottom:32px; }
+.contact-detail { margin-bottom:24px; }
+.contact-detail-label { font-size:.7rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:var(--accent); margin-bottom:6px; }
+.contact-detail p { font-size:.95rem; color:var(--ink); margin-bottom:0; line-height:1.5; }
+.contact-form { display:flex; flex-direction:column; gap:20px; }
+.form-group label { display:block; font-size:.8rem; font-weight:600; letter-spacing:0.04em; margin-bottom:8px; }
+.form-group input, .form-group textarea, .form-group select { width:100%; font-family:var(--sans); font-size:.9rem; padding:12px 16px; border:1.5px solid var(--mist); border-radius:8px; background:var(--chalk); color:var(--ink); transition:border-color .25s; outline:none; }
+.form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color:var(--accent); }
+.form-group textarea { min-height:120px; resize:vertical; }
+.form-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+
+/* ── FOOTER ── */
+.footer { padding:64px clamp(24px,4vw,64px) 40px; border-top:1px solid var(--mist); }
+.footer-inner { max-width:var(--max-w); margin:0 auto; display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:48px; }
+.footer-brand p { font-size:.85rem; color:var(--slate); line-height:1.6; margin-top:16px; max-width:280px; }
+.footer-col h4 { font-size:.7rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; margin-bottom:16px; }
+.footer-col a { display:block; font-size:.85rem; color:var(--slate); text-decoration:none; margin-bottom:10px; transition:color .25s; }
+.footer-col a:hover { color:var(--accent); }
+.footer-bottom { max-width:var(--max-w); margin:48px auto 0; padding-top:24px; border-top:1px solid var(--mist); display:flex; justify-content:space-between; font-size:.78rem; color:var(--slate); }
+
+/* ── HIGHLIGHTS STRIP ── */
+.highlights-strip {
+  display:flex; gap:24px; margin-top:48px; flex-wrap:wrap;
+}
+.highlight-pill {
+  display:flex; align-items:center; gap:10px;
+  padding:12px 20px; border-radius:8px;
+  background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08);
+  font-size:.85rem; color:rgba(248,247,244,.6);
+}
+.highlight-pill strong { color:var(--chalk); font-weight:600; }
+
+/* RESPONSIVE */
+/* ── BREAK IT DOWN — EXEC CALLOUT ── */
+.exec-callout {
+  max-width:860px;
+  margin:0 auto;
+  padding:56px 56px 56px 56px;
+  background:var(--warm);
+  border-radius:16px;
+  border-left:4px solid var(--accent);
+  position:relative;
+}
+.exec-callout-tag {
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:.72rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:24px;
+  padding:6px 14px;border-radius:20px;background:rgba(232,93,38,.08);
+}
+.exec-callout h3 {
+  font-family:var(--serif);font-size:clamp(1.5rem,2.5vw,2rem);
+  line-height:1.25;margin-bottom:20px;color:var(--ink);
+}
+.exec-callout > p {
+  font-size:1rem;line-height:1.75;color:var(--slate);margin-bottom:24px;
+}
+.exec-steps {
+  display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:8px;
+}
+.exec-step {
+  padding:24px;border-radius:10px;background:var(--chalk);
+  border:1px solid var(--mist);
+}
+.exec-step-num {
+  font-family:var(--serif);font-size:1.8rem;color:var(--accent);opacity:.5;margin-bottom:8px;
+}
+.exec-step h4 { font-size:.9rem;font-weight:600;margin-bottom:6px;color:var(--ink); }
+.exec-step p { font-size:.82rem;line-height:1.55;color:var(--slate); }
+.exec-bottom {
+  margin-top:28px;padding-top:24px;border-top:1px solid var(--mist);
+  font-size:.9rem;color:var(--slate);line-height:1.6;
+}
+.exec-bottom strong { color:var(--ink); }
+@media (max-width:900px) {
+  .exec-callout { padding:36px 28px; }
+  .exec-steps { grid-template-columns:1fr; }
+}
+
+/* RESPONSIVE */
+@media (max-width:900px) {
+  .narrative-grid, .industries-grid, .careers-values, .benefits-grid, .contact-grid, .deliver-grid { grid-template-columns:1fr; }
+  .differ-cols { grid-template-columns:1fr; gap:24px; }
+  .differ-vs { transform:rotate(90deg); padding:8px 0; }
+  .metrics-row, .global-grid { grid-template-columns:1fr 1fr; }
+  .hero-stats { flex-wrap:wrap; gap:32px; }
+  .footer-inner { grid-template-columns:1fr 1fr; }
+  .nav-links { display:none; }
+  .mobile-toggle { display:block; }
+  .nav-links.open { display:flex; flex-direction:column; position:fixed; top:var(--nav-h); left:0; right:0; background:var(--chalk); padding:24px; gap:16px; border-bottom:1px solid var(--mist); }
+  .form-row { grid-template-columns:1fr; }
+  .role-card { grid-template-columns:1fr; gap:8px; }
+}
+</style>
+</head>
+<body>
+
+<nav class="nav" id="mainNav">
+  <a href="#home" class="nav-logo" onclick="showPage('home')">go<span>AI</span></a>
+  <div class="nav-links" id="navLinks">
+    <a href="#home" onclick="showPage('home')">Home</a>
+    <a href="#about" onclick="showPage('about')">About</a>
+    <a href="#careers" onclick="showPage('careers')">Careers</a>
+    <a href="#contact" onclick="showPage('contact')" class="cta-link">Let's Talk</a>
+  </div>
+  <button class="mobile-toggle" onclick="document.getElementById('navLinks').classList.toggle('open')" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- HOME -->
+<!-- ══════════════════════════════════════════ -->
+<div class="page active" id="page-home">
+
+  <section class="hero">
+    <div class="hero-eyebrow">The AI Pod Delivery Model</div>
+    <h1>The Global Delivery Model<br>had <em>a good run.</em></h1>
+    <p class="hero-sub">For two decades, enterprises outsourced software at scale through the GDM. It worked — until AI changed everything. goAI's AI Pod Delivery Model replaces armies of developers with small, AI-augmented pods that ship faster, cost less, and deliver better outcomes.</p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn btn-primary" onclick="showPage('contact')">Start a Conversation</a>
+      <a href="#about" class="btn btn-outline" onclick="showPage('about')">Our Story</a>
+    </div>
+    <div class="hero-stats">
+      <div><div class="hero-stat-num">80%</div><div class="hero-stat-label">Smaller team, same output</div></div>
+      <div><div class="hero-stat-num">4</div><div class="hero-stat-label">Continents, one model</div></div>
+      <div><div class="hero-stat-num">6+</div><div class="hero-stat-label">Enterprise clients at scale</div></div>
+      <div><div class="hero-stat-num">3–5×</div><div class="hero-stat-label">Faster time to delivery</div></div>
+    </div>
+  </section>
+
+  <!-- THE HARD TRUTH -->
+  <section class="hard-truth">
+    <div class="hard-truth-inner">
+      <h2>It will be hard to admit, but most enterprises are still <em>doing AI wrong.</em></h2>
+      <p>They're giving Copilot to individual developers and calling it a strategy. That's not transformation — that's a productivity band-aid. The gains are real but incremental. The model itself hasn't changed. The team structure hasn't changed. The delivery economics haven't changed.</p>
+    </div>
+  </section>
+
+  <!-- THE DIFFERENTIATOR -->
+  <section class="differ-section">
+    <div class="differ-inner">
+      <div class="section-eyebrow">The Core Differentiator</div>
+      <div class="section-title">Person-centric AI gives you 10%.<br>Team-centric AI gives you 10×.</div>
+      <p class="section-body">Most enterprises adopt AI by enabling the individual — a code assistant here, a chatbot there. APDM takes a fundamentally different approach: it enables the team and the enterprise, pulling in deep organizational context so AI pods work as a coordinated unit, not a collection of assisted individuals.</p>
+
+      <div class="differ-cols">
+        <!-- LEFT: Person-Centric -->
+        <div class="differ-card left">
+          <div class="differ-tag">What Most Companies Do</div>
+          <h3>Person-Centric AI</h3>
+          <div class="differ-flow">
+            <div class="differ-step">
+              <div class="differ-icon">1</div>
+              <div class="differ-step-text">
+                <h4>Tool per person</h4>
+                <p>Individual developers get Copilot or ChatGPT. Each person works in isolation with a generic AI assistant.</p>
+              </div>
+            </div>
+            <div class="differ-step">
+              <div class="differ-icon">2</div>
+              <div class="differ-step-text">
+                <h4>No shared context</h4>
+                <p>AI has no access to your codebase architecture, business rules, compliance requirements, or team knowledge.</p>
+              </div>
+            </div>
+            <div class="differ-step">
+              <div class="differ-icon">3</div>
+              <div class="differ-step-text">
+                <h4>Same team, slightly faster</h4>
+                <p>20-person team types code a bit faster. Team structure unchanged. Handoff overhead unchanged. Delivery model unchanged.</p>
+              </div>
+            </div>
+          </div>
+          <div class="differ-result">
+            <div class="differ-result-num">5–10%</div>
+            <div class="differ-result-label">Incremental productivity gain</div>
+          </div>
+        </div>
+
+        <div class="differ-vs">vs</div>
+
+        <!-- RIGHT: Team/Enterprise-Centric -->
+        <div class="differ-card right">
+          <div class="differ-tag">What APDM Does</div>
+          <h3>Team & Enterprise-Centric AI</h3>
+          <div class="differ-flow">
+            <div class="differ-step">
+              <div class="differ-icon">1</div>
+              <div class="differ-step-text">
+                <h4>AI connected to your enterprise</h4>
+                <p>MCP connects AI to GitHub repos, internal data, knowledge bases, compliance docs — the full organizational context.</p>
+              </div>
+            </div>
+            <div class="differ-step">
+              <div class="differ-icon">2</div>
+              <div class="differ-step-text">
+                <h4>Pod works as one AI-augmented unit</h4>
+                <p>4–6 people with shared AI context. Agentic code generation, automated testing, AI-driven architecture decisions — as a coordinated team.</p>
+              </div>
+            </div>
+            <div class="differ-step">
+              <div class="differ-icon">3</div>
+              <div class="differ-step-text">
+                <h4>Fundamentally different delivery economics</h4>
+                <p>Small pod replaces large team. Knowledge compounds across engagements. Quality improves as AI context deepens.</p>
+              </div>
+            </div>
+          </div>
+          <div class="differ-result">
+            <div class="differ-result-num">60–80%</div>
+            <div class="differ-result-label">Structural productivity transformation</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BREAK IT DOWN — EXEC CALLOUT -->
+  <section class="section section-warm">
+    <div class="exec-callout">
+      <div class="exec-callout-tag">💡 Not a technologist? Start here.</div>
+      <h3>You don't need to understand AI to understand what this means for your business.</h3>
+      <p>If you're a business leader — a COO, a VP of Operations, a division head — here's what APDM means in plain language:</p>
+      <div class="exec-steps">
+        <div class="exec-step">
+          <div class="exec-step-num">1</div>
+          <h4>Your software teams are too big</h4>
+          <p>Most enterprises have 20–30 people on a typical software project. The majority of their time goes to coordination, context-switching, and rework — not building.</p>
+        </div>
+        <div class="exec-step">
+          <div class="exec-step-num">2</div>
+          <h4>AI can do the grunt work</h4>
+          <p>Not the thinking — the typing, the boilerplate, the repetitive testing, the documentation. The things that inflate your team size without adding judgment.</p>
+        </div>
+        <div class="exec-step">
+          <div class="exec-step-num">3</div>
+          <h4>So you need fewer, better people</h4>
+          <p>A pod of 4–6 senior people, equipped with AI that understands your business, can deliver what used to take a team of 20. Same quality. Faster. At a fraction of the cost.</p>
+        </div>
+      </div>
+      <div class="exec-bottom">
+        <strong>What this means for your P&L:</strong> If you're spending $10M a year on software delivery, APDM can deliver the same outcomes for $2–4M — and ship faster. That's not an efficiency play. It's a structural cost transformation. And it's happening right now, at enterprises across retail, energy, financial services, and media.
+      </div>
+    </div>
+  </section>
+
+  <!-- THE SHIFT -->
+  <section class="section section-dark">
+    <div class="section-inner">
+      <div class="section-eyebrow">The Paradigm Shift</div>
+      <div class="section-title">The enterprise delivery model hasn't evolved in 25 years. We built what comes next.</div>
+      <p class="section-body">The traditional GDM — large offshore teams, linear handoffs, waterfall cadences — was designed for a world before AI. Today, a 4-person AI-augmented pod can replace a 20-person team. Not in theory. In production, for Fortune 500 companies, right now.</p>
+
+      <div class="narrative-grid">
+        <div class="narrative-card old">
+          <div class="narrative-card-tag">The Old World — GDM</div>
+          <h3>Large teams. Linear handoffs. Diminishing returns.</h3>
+          <ul>
+            <li>20–30 person teams for standard enterprise projects</li>
+            <li>Months of ramp-up before first deliverable</li>
+            <li>Communication overhead scales with headcount</li>
+            <li>Quality degrades as teams grow</li>
+            <li>Vendor lock-in through headcount dependency</li>
+          </ul>
+        </div>
+        <div class="narrative-card new">
+          <div class="narrative-card-tag">The New World — APDM</div>
+          <h3>Small pods. AI-native. Compounding velocity.</h3>
+          <ul>
+            <li>4–6 person pods with AI force-multiplied output</li>
+            <li>First deliverable in days, not months</li>
+            <li>AI handles boilerplate; humans handle judgment</li>
+            <li>Quality improves as AI context deepens</li>
+            <li>Knowledge compounds across pod engagements</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT WE DELIVER -->
+  <section class="section section-dark" style="padding-top:0;">
+    <div class="section-inner">
+      <div class="section-eyebrow">What Pods Deliver</div>
+      <div class="section-title">Enterprise-grade software, reimagined through AI pods.</div>
+      <p class="section-body">APDM isn't limited to one type of work. Our pods deliver across the full spectrum of enterprise software — from greenfield builds to legacy transformation to AI-native intelligence layers.</p>
+
+      <div class="deliver-grid">
+        <div class="deliver-card">
+          <h3>Full-Stack Development</h3>
+          <p>End-to-end application development with AI-augmented pods. Modern architectures, cloud-native stacks, API-first design. From React frontends to distributed backend services — shipped at 3–5× the velocity of traditional teams.</p>
+        </div>
+        <div class="deliver-card">
+          <h3>Legacy Modernization</h3>
+          <p>Re-architecture of monolithic enterprise systems into modern, scalable platforms. MySQL to HBase migrations, mainframe decomposition, and incremental modernization strategies that keep production running while transforming underneath.</p>
+        </div>
+        <div class="deliver-card">
+          <h3>RAG & AI Pipelines</h3>
+          <p>Production-grade retrieval-augmented generation systems that connect LLMs to your enterprise data. From document intelligence to conversational interfaces to knowledge graphs — grounded in your data, not hallucinations.</p>
+        </div>
+        <div class="deliver-card">
+          <h3>Enterprise AI Studio</h3>
+          <p>Custom AI solutions: model fine-tuning, agent orchestration, multi-model pipelines, and enterprise LLM deployment. From proof-of-concept to production in weeks, not quarters.</p>
+        </div>
+        <div class="deliver-card">
+          <h3>MCP Integration</h3>
+          <p>Model Context Protocol services that connect organizational context — GitHub repos, internal databases, knowledge bases — into a shared AI platform for your dev and IT teams.</p>
+        </div>
+        <div class="deliver-card">
+          <h3>AI-Powered Support</h3>
+          <p>Transforming reactive enterprise support into proactive, AI-augmented operations. Predictive issue detection, automated resolution, and continuously learning support pods.</p>
+        </div>
+      </div>
+
+      <div class="highlights-strip">
+        <div class="highlight-pill"><strong>+</strong> AI-powered workflow discovery</div>
+        <div class="highlight-pill"><strong>+</strong> Agentic PR generation</div>
+        <div class="highlight-pill"><strong>+</strong> Compliance intelligence</div>
+        <div class="highlight-pill"><strong>+</strong> Enterprise AI readiness assessments</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- IMPACT -->
+  <section class="section">
+    <div class="section-inner">
+      <div class="section-eyebrow">Measured Impact</div>
+      <div class="section-title">Enterprise-grade results, delivered.</div>
+      <p class="section-body">These aren't pilot metrics. They're production outcomes from engagements with global enterprises running real workloads at scale.</p>
+      <div class="metrics-row">
+        <div class="metric-cell"><div class="metric-num">Up to 80%</div><div class="metric-label">Reduction in team size<br>for equivalent output</div></div>
+        <div class="metric-cell"><div class="metric-num">$15–24M</div><div class="metric-label">Estimated annual savings<br>for a single enterprise</div></div>
+        <div class="metric-cell"><div class="metric-num">Days</div><div class="metric-label">Time to first deliverable<br>vs. months in GDM</div></div>
+        <div class="metric-cell"><div class="metric-num">100%</div><div class="metric-label">AI-augmented delivery<br>across every engagement</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INDUSTRIES -->
+  <section class="section section-warm">
+    <div class="section-inner">
+      <div class="section-eyebrow">Industries</div>
+      <div class="section-title">Proven across sectors that demand rigor.</div>
+      <p class="section-body">APDM adapts to the compliance, scale, and complexity requirements of the world's most demanding industries.</p>
+      <div class="industries-grid">
+        <div class="industry-card">
+          <div class="industry-icon">⚡</div>
+          <h3>Energy & Utilities</h3>
+          <p>Regulatory compliance, SCADA integration, grid modernization — from ANEEL compliance in Brazil to smart grid analytics in the UK.</p>
+          <div class="industry-client">Active engagements across UK & Brazil</div>
+        </div>
+        <div class="industry-card">
+          <div class="industry-icon">🛒</div>
+          <h3>Retail & Commerce</h3>
+          <p>Supply chain re-architecture, invoice processing at scale, commerce platform modernization for the world's largest retailers.</p>
+          <div class="industry-client">Fortune 50 & global marketplace clients</div>
+        </div>
+        <div class="industry-card">
+          <div class="industry-icon">🎬</div>
+          <h3>Media & Entertainment</h3>
+          <p>Content operations transformation, quality assurance automation, and digital experience platforms for global media companies.</p>
+          <div class="industry-client">Global media & entertainment enterprise</div>
+        </div>
+        <div class="industry-card">
+          <div class="industry-icon">🏦</div>
+          <h3>Financial Services</h3>
+          <p>Payment automation, compliance monitoring, and AI-driven risk analysis for banking and investment firms.</p>
+          <div class="industry-client">Investment banking & capital markets</div>
+        </div>
+        <div class="industry-card">
+          <div class="industry-icon">🤖</div>
+          <h3>Industrial & Robotics</h3>
+          <p>AI-powered operational automation and intelligent systems for next-generation industrial and robotics companies.</p>
+          <div class="industry-client">Next-gen industrial automation</div>
+        </div>
+        <div class="industry-card">
+          <div class="industry-icon">👟</div>
+          <h3>Consumer Brands</h3>
+          <p>Digital transformation, AI-native customer experience, and enterprise platform modernization for iconic global brands.</p>
+          <div class="industry-client">Iconic global consumer brands</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GLOBAL -->
+  <section class="section">
+    <div class="section-inner">
+      <div class="section-eyebrow">Global Presence</div>
+      <div class="section-title">One model. Four continents. Unified delivery.</div>
+      <div class="global-grid">
+        <div class="global-card"><div class="global-flag">🇮🇳</div><h4>India</h4><p>Engineering & R&D hub. Pod delivery at scale.</p></div>
+        <div class="global-card"><div class="global-flag">🇺🇸</div><h4>United States</h4><p>Enterprise relationships. Strategic operations.</p></div>
+        <div class="global-card"><div class="global-flag">🇧🇷</div><h4>Brazil</h4><p>Latin American energy & industrial delivery.</p></div>
+        <div class="global-card"><div class="global-flag">🇦🇺</div><h4>Australia</h4><p>APAC market. Enterprise consulting.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-banner">
+    <h2>Ready to replace the old model?</h2>
+    <p>Start with a conversation — no commitment, no pitch deck. Just an honest look at what's possible.</p>
+    <a href="#contact" class="btn btn-accent" onclick="showPage('contact')">Start a Conversation →</a>
+  </section>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- ABOUT -->
+<!-- ══════════════════════════════════════════ -->
+<div class="page" id="page-about">
+  <div class="about-hero">
+   <div class="about-hero-inner">
+    <div class="section-eyebrow">About goAI</div>
+    <h1>We didn't set out to build a services company. We set out to <em>end the need for one.</em></h1>
+    <div class="about-body">
+      <p>goAI Solutions is an AI-native consulting and delivery studio. We were founded on a contrarian belief: that the Global Delivery Model — the backbone of the $200B+ IT services industry — is fundamentally broken in the age of AI.</p>
+      <p>The GDM was built for a world where human typing speed was the bottleneck. More people meant more output. But AI has changed the equation. Today, the bottleneck is judgment, not keystrokes. A small team with the right AI tooling and deep organizational context can outperform a team ten times its size.</p>
+      <p>We built the AI Pod Delivery Model (APDM) to prove it. And then we proved it — for Fortune 50 retailers, for one of the world's largest energy utilities, for a global media conglomerate. Not in pilots. In production. At scale.</p>
+      <p>APDM doesn't just give developers better tools. It rewires how enterprise software gets built — connecting AI to your codebase, your architecture, your compliance requirements, and your business rules, so a 4-person pod can operate with the context and output of a team five times its size.</p>
+      <p>We operate across four continents — India, the United States, Brazil, and Australia — serving enterprises in energy, retail, financial services, media, and beyond.</p>
+    </div>
+    <div class="section-eyebrow" style="margin-top:80px">Our Journey</div>
+    <div class="timeline">
+      <div class="timeline-item"><div class="timeline-year">Foundation</div><h3>goAI Solutions founded</h3><p>Established as an AI-native delivery studio with the thesis that AI would fundamentally reshape enterprise software delivery.</p></div>
+      <div class="timeline-item"><div class="timeline-year">First Enterprise Engagements</div><h3>Proving APDM at scale</h3><p>Fortune 50 retail and global marketplace clients validated the AI Pod model in production environments.</p></div>
+      <div class="timeline-item"><div class="timeline-year">Global Expansion</div><h3>Four continents, one model</h3><p>Expanded to the US, Brazil, and Australia. Launched energy sector practice with major UK and European utilities.</p></div>
+      <div class="timeline-item"><div class="timeline-year">Platform & Product</div><h3>From services to platform</h3><p>APDM evolves from a delivery methodology into a licensable platform. Multiple enterprises exploring APDM for internal deployment and strategic investment.</p></div>
+    </div>
+   </div>
+  </div>
+  <section class="cta-banner">
+    <h2>Let's build something together.</h2>
+    <p>Whether you're exploring AI transformation or ready to deploy APDM at scale, we'd love to talk.</p>
+    <a href="#contact" class="btn btn-accent" onclick="showPage('contact')">Get in Touch →</a>
+  </section>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- CAREERS -->
+<!-- ══════════════════════════════════════════ -->
+<div class="page" id="page-careers">
+  <div class="careers-hero">
+    <div class="section-eyebrow">Careers at goAI</div>
+    <h1>Build the future of<br><em>enterprise delivery.</em></h1>
+    <p class="section-body" style="margin-top:24px;max-width:600px;">We're hiring engineers, researchers, and delivery leaders who believe the way enterprise software gets built is about to change fundamentally. If you want to be part of that change — not just watch it — this is the place.</p>
+    <div class="careers-values">
+      <div class="value-card"><div class="value-num">01</div><h3>AI-Native by Default</h3><p>Every person at goAI works with AI, not around it. We don't have an "AI team" — we have teams where AI is as fundamental as the IDE. You'll ship more in a week here than you did in a quarter elsewhere.</p></div>
+      <div class="value-card"><div class="value-num">02</div><h3>Small Teams, Big Impact</h3><p>Our pods are 4–6 people. No bureaucracy. No waterfalls. You'll work directly with enterprise architects at Fortune 500 companies and see your code in production — not in a backlog.</p></div>
+      <div class="value-card"><div class="value-num">03</div><h3>Global from Day One</h3><p>We operate across India, the US, Brazil, and Australia. You'll collaborate across continents and build systems that serve millions of users.</p></div>
+    </div>
+  </div>
+  <div class="roles-section">
+    <h2>Open Positions</h2>
+    <div class="role-group-label">R&D · AI & Platform Engineering</div>
+    <a href="#contact" onclick="showPage('contact')" class="role-card"><div class="role-title">Senior AI/ML Engineer</div><div class="role-loc">Bangalore, India · Remote</div><div class="role-arrow">→</div></a>
+    <a href="#contact" onclick="showPage('contact')" class="role-card"><div class="role-title">MCP Platform Engineer</div><div class="role-loc">Bangalore, India · Remote</div><div class="role-arrow">→</div></a>
+    <a href="#contact" onclick="showPage('contact')" class="role-card"><div class="role-title">AI Agent Architect</div><div class="role-loc">Bangalore / Hyderabad, India</div><div class="role-arrow">→</div></a>
+    <a href="#contact" onclick="showPage('contact')" class="role-card"><div class="role-title">Full Stack Engineer (APDM Platform)</div><div class="role-loc">Bangalore, India · Remote</div><div class="role-arrow">→</div></a>
+    <a href="#contact" onclick="showPage('contact')" class="role-card"><div class="role-title">Data Engineer — Enterprise AI Pipelines</div><div class="role-loc">Bangalore / Hyderabad, India</div><div class="role-arrow">→</div></a>
+    <div class="role-group-label">AI Pod Delivery</div>
+    <a href="#contact" onclick="showPage('contact')" class="role-card"><div class="role-title">AI Pod Lead — Retail & Commerce</div><div class="role-loc">India · Client-embedded</div><div class="role-arrow">→</div></a>
+    <a href="#contact" onclick="showPage('contact')" class="role-card"><div class="role-title">AI Pod Lead — Energy & Utilities</div><div class="role-loc">India / Brazil · Client-embedded</div><div class="role-arrow">→</div></a>
+    <a href="#contact" onclick="showPage('contact')" class="role-card"><div class="role-title">Senior Software Engineer — Pod Delivery</div><div class="role-loc">India · Multiple openings</div><div class="role-arrow">→</div></a>
+    <a href="#contact" onclick="showPage('contact')" class="role-card"><div class="role-title">QA Automation Engineer (AI-Augmented)</div><div class="role-loc">India · Remote</div><div class="role-arrow">→</div></a>
+    <a href="#contact" onclick="showPage('contact')" class="role-card"><div class="role-title">Enterprise Solutions Architect</div><div class="role-loc">US / India · Client-facing</div><div class="role-arrow">→</div></a>
+    <div class="role-group-label">Business & Operations</div>
+    <a href="#contact" onclick="showPage('contact')" class="role-card"><div class="role-title">Client Partner — Enterprise Accounts</div><div class="role-loc">United States · Tampa / Remote</div><div class="role-arrow">→</div></a>
+    <a href="#contact" onclick="showPage('contact')" class="role-card"><div class="role-title">Delivery Manager</div><div class="role-loc">India · Multiple openings</div><div class="role-arrow">→</div></a>
+  </div>
+  <section class="section section-warm">
+    <div class="section-inner">
+      <div class="section-eyebrow">Why goAI</div>
+      <div class="section-title">What we offer.</div>
+      <div class="benefits-grid">
+        <div class="benefit-item"><div class="benefit-icon">🚀</div><div><h4>Ship Real Things, Fast</h4><p>Your code hits production in your first week. You'll build for enterprises that serve millions.</p></div></div>
+        <div class="benefit-item"><div class="benefit-icon">🧠</div><div><h4>AI Tooling Allowance</h4><p>Every engineer gets the best AI tools — Claude, GitHub Copilot, and our internal MCP platform.</p></div></div>
+        <div class="benefit-item"><div class="benefit-icon">🌍</div><div><h4>Global Exposure</h4><p>Work with Fortune 500 enterprises across retail, energy, media, and financial services.</p></div></div>
+        <div class="benefit-item"><div class="benefit-icon">📈</div><div><h4>Equity & Growth</h4><p>Early team members participate in equity. Your career grows as we scale.</p></div></div>
+        <div class="benefit-item"><div class="benefit-icon">📚</div><div><h4>Learning Budget</h4><p>Annual learning and conference budget. Certifications, conferences, and courses are on us.</p></div></div>
+        <div class="benefit-item"><div class="benefit-icon">🏡</div><div><h4>Flexible Work</h4><p>Remote-first for engineering roles. We care about output, not hours in a seat.</p></div></div>
+      </div>
+    </div>
+  </section>
+  <section class="cta-banner">
+    <h2>Don't see your role?</h2>
+    <p>We're always looking for exceptional people. Reach out and tell us what you'd build.</p>
+    <a href="#contact" class="btn btn-accent" onclick="showPage('contact')">Get in Touch →</a>
+  </section>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- CONTACT -->
+<!-- ══════════════════════════════════════════ -->
+<div class="page" id="page-contact">
+  <div class="contact-page">
+    <div class="section-eyebrow">Contact</div>
+    <h1>Let's explore what's possible.</h1>
+    <div class="contact-grid">
+      <div class="contact-info">
+        <p>Whether you're a Fortune 500 enterprise exploring AI-native delivery, a mid-market company ready to modernize, or an engineer who wants to build the future — we'd love to hear from you.</p>
+        <div class="contact-detail"><div class="contact-detail-label">General Inquiries</div><p>hello@goai.solutions</p></div>
+        <div class="contact-detail"><div class="contact-detail-label">Enterprise & Partnerships</div><p>enterprise@goai.solutions</p></div>
+        <div class="contact-detail"><div class="contact-detail-label">Careers</div><p>careers@goai.solutions</p></div>
+        <div class="contact-detail"><div class="contact-detail-label">United States</div><p>Tampa Metro, Florida</p></div>
+        <div class="contact-detail"><div class="contact-detail-label">India</div><p>Bangalore · Hyderabad</p></div>
+        <div class="contact-detail"><div class="contact-detail-label">Brazil</div><p>São Paulo</p></div>
+      </div>
+      <div>
+        <form class="contact-form" onsubmit="event.preventDefault();alert('Thank you! We\'ll be in touch shortly.');">
+          <div class="form-row">
+            <div class="form-group"><label>First Name</label><input type="text" placeholder="Jane" required></div>
+            <div class="form-group"><label>Last Name</label><input type="text" placeholder="Smith" required></div>
+          </div>
+          <div class="form-group"><label>Work Email</label><input type="email" placeholder="jane@company.com" required></div>
+          <div class="form-group"><label>Company</label><input type="text" placeholder="Acme Corp"></div>
+          <div class="form-group"><label>I'm interested in...</label>
+            <select>
+              <option>AI Pod Delivery (APDM)</option>
+              <option>Full-Stack Development</option>
+              <option>Legacy Modernization</option>
+              <option>RAG & AI Pipelines</option>
+              <option>MCP Integration</option>
+              <option>Partnership / Investment</option>
+              <option>Careers at goAI</option>
+              <option>Something else</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Tell us more</label><textarea placeholder="What are you trying to accomplish? What's the scale? Any context helps us prepare for a better conversation."></textarea></div>
+          <button type="submit" class="btn btn-primary" style="align-self:flex-start;">Send Message →</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <a href="#home" class="nav-logo" onclick="showPage('home')">go<span>AI</span></a>
+      <p>AI-native enterprise delivery. Replacing the Global Delivery Model with something fundamentally better.</p>
+    </div>
+    <div class="footer-col"><h4>Company</h4><a href="#about" onclick="showPage('about')">About</a><a href="#careers" onclick="showPage('careers')">Careers</a><a href="#contact" onclick="showPage('contact')">Contact</a></div>
+    <div class="footer-col"><h4>Capabilities</h4><a href="#home" onclick="showPage('home')">AI Pod Delivery</a><a href="#home" onclick="showPage('home')">Full-Stack Development</a><a href="#home" onclick="showPage('home')">Legacy Modernization</a><a href="#home" onclick="showPage('home')">RAG & AI Pipelines</a></div>
+    <div class="footer-col"><h4>Industries</h4><a href="#home" onclick="showPage('home')">Energy & Utilities</a><a href="#home" onclick="showPage('home')">Retail & Commerce</a><a href="#home" onclick="showPage('home')">Financial Services</a><a href="#home" onclick="showPage('home')">Media & Entertainment</a></div>
+  </div>
+  <div class="footer-bottom"><span>© 2026 goAI Solutions. All rights reserved.</span><span>DPIIT Recognized Startup</span></div>
+</footer>
+
+<script>
+function showPage(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-'+page).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+  document.getElementById('navLinks').classList.remove('open');
+}
+window.addEventListener('scroll',()=>{
+  document.getElementById('mainNav').classList.toggle('scrolled',window.scrollY>40);
+});
+function handleHash(){
+  const hash=window.location.hash.replace('#','')||'home';
+  if(['home','about','careers','contact'].includes(hash)) showPage(hash);
+}
+window.addEventListener('hashchange',handleHash);
+handleHash();
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='translateY(0)';}});
+},{threshold:0.12,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.section-inner,.differ-inner,.careers-hero,.about-hero-inner,.contact-page,.hard-truth-inner,.exec-callout').forEach(el=>{
+  el.style.opacity='0';el.style.transform='translateY(32px)';el.style.transition='opacity .7s ease, transform .7s ease';
+  observer.observe(el);
+});
+</script>
+</body>
+</html>
