@@ -54,21 +54,16 @@ body::before { content:''; position:fixed; inset:0; background-image:url("data:i
 .btn-accent:hover { background:var(--accent-dark); }
 
 /* HERO */
-.hero { min-height:100vh; display:grid; grid-template-columns:55fr 45fr; align-items:center; gap:clamp(40px,5vw,80px); padding:calc(var(--nav-h) + 40px) clamp(24px,4vw,64px) 80px; position:relative; overflow:hidden; }
+.hero { min-height:100vh; display:flex; flex-direction:column; justify-content:center; padding:calc(var(--nav-h) + 40px) clamp(24px,4vw,64px) 80px; position:relative; overflow:hidden; }
 .hero::before { content:''; position:absolute; top:-20%; right:-10%; width:800px; height:800px; background:radial-gradient(circle,rgba(232,93,38,.06) 0%,transparent 70%); pointer-events:none; }
-.hero-left { display:flex; flex-direction:column; }
 .hero-eyebrow { font-size:.8rem; font-weight:600; letter-spacing:0.15em; text-transform:uppercase; color:var(--accent); margin-bottom:24px; opacity:0; animation:fadeUp .8s .2s forwards; }
-.hero h1 { font-family:var(--serif); font-size:clamp(2.8rem,6vw,5.2rem); line-height:1.08; letter-spacing:-0.025em; opacity:0; animation:fadeUp .8s .35s forwards; }
+.hero h1 { font-family:var(--serif); font-size:clamp(2.8rem,6vw,5.2rem); line-height:1.08; letter-spacing:-0.025em; max-width:900px; opacity:0; animation:fadeUp .8s .35s forwards; }
 .hero h1 em { font-style:italic; color:var(--accent); }
-.hero-sub { font-size:clamp(1rem,1.6vw,1.2rem); line-height:1.6; color:var(--slate); margin-top:28px; opacity:0; animation:fadeUp .8s .5s forwards; }
+.hero-sub { font-size:clamp(1.1rem,1.8vw,1.35rem); line-height:1.6; color:var(--slate); max-width:620px; margin-top:28px; opacity:0; animation:fadeUp .8s .5s forwards; }
 .hero-actions { display:flex; gap:16px; margin-top:40px; opacity:0; animation:fadeUp .8s .65s forwards; }
-.hero-stats { display:grid; grid-template-columns:1fr 1fr; gap:0; margin-top:0; padding-top:0; border-top:none; background:var(--ink); border-radius:16px; overflow:hidden; opacity:0; animation:fadeUp .8s .8s forwards; }
-.hero-stat-item { padding:36px 28px; border-bottom:1px solid rgba(128,128,128,.12); border-right:1px solid rgba(128,128,128,.12); }
-.hero-stat-item:nth-child(2n) { border-right:none; }
-.hero-stat-item:nth-child(n+3) { border-bottom:none; }
-.hero-stat-num { font-family:var(--serif); font-size:2.6rem; letter-spacing:-0.02em; color:var(--chalk); }
-.hero-stat-prefix { font-size:.38em; font-family:var(--sans); font-weight:400; opacity:.55; vertical-align:middle; margin-right:4px; }
-.hero-stat-label { font-size:.8rem; color:var(--chalk); opacity:.6; margin-top:8px; }
+.hero-stats { display:flex; gap:48px; margin-top:72px; padding-top:40px; border-top:1px solid var(--mist); opacity:0; animation:fadeUp .8s .8s forwards; }
+.hero-stat-num { font-family:var(--serif); font-size:2.5rem; letter-spacing:-0.02em; text-align:center; }
+.hero-stat-label { font-size:.8rem; color:var(--slate); margin-top:4px; text-align:center; }
 @keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
 
 /* SECTIONS */
@@ -469,8 +464,7 @@ body::before { content:''; position:fixed; inset:0; background-image:url("data:i
   .differ-cols { grid-template-columns:1fr; gap:24px; }
   .differ-vs { transform:rotate(90deg); padding:8px 0; }
   .metrics-row, .global-grid { grid-template-columns:1fr 1fr; }
-  .hero { grid-template-columns:1fr; }
-  .hero-stats { margin-top:48px; }
+  .hero-stats { flex-wrap:wrap; gap:32px; }
   .footer-inner { grid-template-columns:1fr 1fr; }
   .nav-links { display:none; }
   .mobile-toggle { display:block; }
@@ -502,20 +496,18 @@ body::before { content:''; position:fixed; inset:0; background-image:url("data:i
 <div class="page active" id="page-home">
 
   <section class="hero">
-    <div class="hero-left">
-      <div class="hero-eyebrow">The AI Pod Delivery Model</div>
-      <h1>The Global Delivery Model<br>had <em>a good run.</em></h1>
-      <p class="hero-sub">For three decades, enterprises outsourced software at scale through the GDM. It worked — until AI changed everything. goAI's AI Pod Delivery Model replaces large offshore teams with small, AI-augmented pods that can ship faster and deliver stronger outcomes.</p>
-      <div class="hero-actions">
-        <a href="#contact" class="btn btn-primary" onclick="showPage('contact')">Start a Conversation</a>
-        <a href="#about" class="btn btn-outline" onclick="showPage('about')">Our Story</a>
-      </div>
+    <div class="hero-eyebrow">The AI Pod Delivery Model</div>
+    <h1>The Global Delivery Model<br>had <em>a good run.</em></h1>
+    <p class="hero-sub">For three decades, enterprises outsourced software at scale through the GDM. It worked — until AI changed everything. goAI's AI Pod Delivery Model replaces large offshore teams with small, AI-augmented pods that can ship faster and deliver stronger outcomes.</p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn btn-primary" onclick="showPage('contact')">Start a Conversation</a>
+      <a href="#about" class="btn btn-outline" onclick="showPage('about')">Our Story</a>
     </div>
     <div class="hero-stats">
-      <div class="hero-stat-item"><div class="hero-stat-num"><span class="hero-stat-prefix">up to</span>80%</div><div class="hero-stat-label">Smaller teams, comparable output</div></div>
-      <div class="hero-stat-item"><div class="hero-stat-num">4</div><div class="hero-stat-label">Continents, one model</div></div>
-      <div class="hero-stat-item"><div class="hero-stat-num">6+</div><div class="hero-stat-label">Enterprise clients at scale</div></div>
-      <div class="hero-stat-item"><div class="hero-stat-num">3–5×</div><div class="hero-stat-label">Faster time to delivery</div></div>
+      <div><div class="hero-stat-num"><span style="font-size:.38em;font-family:var(--sans);font-weight:400;opacity:.55;vertical-align:middle;margin-right:4px">up to</span>80%</div><div class="hero-stat-label">Smaller teams, comparable output</div></div>
+      <div><div class="hero-stat-num">4</div><div class="hero-stat-label">Continents, one model</div></div>
+      <div><div class="hero-stat-num">6+</div><div class="hero-stat-label">Enterprise clients at scale</div></div>
+      <div><div class="hero-stat-num">3–5×</div><div class="hero-stat-label">Faster time to delivery</div></div>
     </div>
   </section>
 
